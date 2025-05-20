@@ -20,7 +20,7 @@ import google.generativeai as genai
 
 
 # Configure Gemini API
-configure(api_key="AIzaSyAsskJ6QKtwVlTVw3Von1IWMkGuzzCVw4k")
+configure(api_key="Your API Key")
 model = GenerativeModel('gemini-1.5-flash')
 
 # Define Ayurvedic expert prompt
@@ -157,7 +157,7 @@ def get_ayurvedic_recipe(disease):
     
     try:
         # Configure the Gemini API
-        genai.configure(api_key="AIzaSyAsskJ6QKtwVlTVw3Von1IWMkGuzzCVw4k")
+        genai.configure(api_key="Your API Key")
         
         # Initialize the model
         model = genai.GenerativeModel('gemini-1.5-flash')
