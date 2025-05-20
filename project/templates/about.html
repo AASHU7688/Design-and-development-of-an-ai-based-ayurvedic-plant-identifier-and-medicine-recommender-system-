@@ -1,0 +1,176 @@
+
+{% extends "base.html" %} 
+{% load static %}
+
+
+{% block title %} About {% endblock %}
+
+{% block body %}
+<br><br><br><br>
+
+<section class="hero">
+    <div class="hero-content">
+        <h1>About Our Mission</h1>
+        <p>Blending Ayurveda with AI to identify and explore medicinal plants for a healthier tomorrow.</p>
+        <button class="btn" onclick="scrollToAbout()">Learn More</button>
+    </div>
+    <div class="scroll-down" onclick="scrollToAbout()">
+        <i class="fas fa-angle-down"></i>
+    </div>
+</section>
+
+<section class="team-section" id="about-section">
+    <h2>Our Team</h2>
+    <div class="team-container">
+        <div class="team-member">
+            <img src="{% static "images/a2.jpg" %}" alt="Team Member 1">
+            <h3>Aakash Kushwah</h3>
+            <p>Backend Developer</p>
+        </div>
+        <div class="team-member">
+            <img src="{% static "images/aaliya.jpg" %}" alt="Team Member 2">
+            <h3>Aaliya Khan</h3>
+            
+            <p>Frontend Developer</p>
+        </div>
+        <div class="team-member">
+            <img src="{% static "images/aashu.jpg" %}" alt="Team Member 3">
+            <h3>Aashutosh Tiwari</h3>
+            <p>Data Scienist</p>
+        </div>
+    </div>
+</section>
+
+<script>
+    function scrollToAbout() {
+        document.getElementById("about-section").scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+</script>
+
+<style>
+.hero {
+    position: relative;
+    height: 50vh;
+    background: url('https://source.unsplash.com/1600x900/?ayurveda,medicinal-plants') no-repeat center center/cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: black;
+    padding: 20px;
+}
+
+.hero-content {
+    max-width: 800px;
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin: 15px 0;
+    opacity: 0.9;
+}
+
+.btn {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 12px 24px;
+    font-size: 18px;
+    color: white;
+    background: #4CAF50;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.btn:hover {
+    background: #388E3C;
+    transform: scale(1.05);
+}
+
+.scroll-down {
+    position: absolute;
+    bottom: 20px;
+    font-size: 22px;
+    color: black;
+    cursor: pointer;
+    animation: bounce 2s infinite;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(15px); }
+}
+
+.team-section {
+    text-align: center;
+    padding: 60px 20px;
+   
+    animation: fadeInUp 1.5s ease-in-out forwards 2s;
+}
+
+.team-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+}
+
+.team-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 40px;
+}
+
+.team-member {
+    background: white;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    width: 200px;
+    transition: transform 0.3s ease;
+}
+
+.team-member:hover {
+    transform: translateY(-10px);
+}
+
+.team-member img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+}
+
+.team-member h3 {
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+.team-member p {
+    font-size: 0.95rem;
+    color: #555;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(50px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+</style>
+<br>
+<br>
+<br>
+<br>
+
+{% endblock %}

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Developer | Plant Medicine AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: url('https://source.unsplash.com/1600x900/?herbs,ayurveda,nature') no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 600px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            backdrop-filter: blur(8px);
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #ffd700;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .contact-info a {
+            text-decoration: none;
+            color: white;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.3s;
+        }
+
+        .contact-info a:hover {
+            color: #ffd700;
+            transform: scale(1.05);
+        }
+
+        .contact-info i {
+            font-size: 1.5rem;
+            color: #ffd700;
+        }
+
+        /* Floating Leaves Animation */
+        .floating-leaf {
+            position: absolute;
+            width: 50px;
+            opacity: 0.8;
+            animation: float 5s infinite linear alternate;
+        }
+
+        .leaf1 { top: 10%; left: 5%; animation-duration: 6s; }
+        .leaf2 { top: 20%; right: 10%; animation-duration: 8s; }
+        .leaf3 { bottom: 15%; left: 20%; animation-duration: 7s; }
+        .leaf4 { bottom: 10%; right: 5%; animation-duration: 6s; }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(-20px) rotate(15deg); }
+        }
+
+        /* Fade In Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .hero p { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <section class="hero">
+        <div class="overlay"></div>
+        <div class="hero-content">
+            <h1>Student Developer</h1>
+            <p>Building AI-powered Plant Medicine Identification Systems 🌿✨</p>
+
+            <div class="contact-info">
+                <a href="https://linkedin.com/in/yourprofile" target="_blank">
+                    <i class="fab fa-linkedin"></i> LinkedIn
+                </a>
+                <a href="mailto:your.email@example.com">
+                    <i class="fas fa-envelope"></i> your.email@example.com
+                </a>
+                <a href="tel:+1234567890">
+                    <i class="fas fa-phone"></i> +123 456 7890
+                </a>
+            </div>
+        </div>
+
+        <!-- Floating Leaves Animation -->
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Leaf_icon.svg" class="floating-leaf leaf1">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Leaf_icon.svg" class="floating-leaf leaf2">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Leaf_icon.svg" class="floating-leaf leaf3">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Leaf_icon.svg" class="floating-leaf leaf4">
+    </section>
+
+</body>
+</html>

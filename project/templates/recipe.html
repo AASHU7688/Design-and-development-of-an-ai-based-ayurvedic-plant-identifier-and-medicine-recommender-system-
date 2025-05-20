@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Ayurvedic Recipe Finder{% endblock %}
+
+{% block body %}
+<br><br><br><br><br>
+<div class="recipe-container">
+    <h2>⚕️ Ayurvedic Remedy Finder</h2>
+    
+    <div class="input-section">
+        <form method="post" id="recipe-form">
+            {% csrf_token %}
+            <div class="input-group">
+                <label for="disease-input">Enter Your Health Condition:</label>
+                <input type="text" name="question" id="disease-input" placeholder="e.g. Arthritis, Diabetes, Cold..." required />
+            </div>
+            <button type="submit" class="recipe-button">Get Recipe</button>
+        </form>
+    </div>
+    
+    <div class="recipe-result" id="recipe-result">
+        {% if last_disease %}
+            <div class="condition-header">
+                <span class="condition-label">Condition:</span> 
+                <span class="condition-name">{{ last_disease }}</span>
+            </div>
+            <div class="recipe-content">
+                {{ last_recipe|linebreaksbr }}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <p>Enter a health condition above to get an Ayurvedic recipe recommendation</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+<br><br><br><br>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f2f5;
+        padding: 30px;
+    }
+    .recipe-container {
+        max-width: 800px;
+        margin: auto;
+        background: white;
+        border-radius: 8px;
+        padding: 30px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #2c3e50;
+    }
+    .input-section {
+        margin-bottom: 30px;
+    }
+    .input-group {
+        margin-bottom: 15px;
+    }
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+        color: #444;
+    }
+    input[type="text"] {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+    }
+    .recipe-button {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    .recipe-button:hover {
+        background-color: #0056b3;
+    }
+    .recipe-result {
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        padding: 20px;
+        min-height: 200px;
+    }
+    .condition-header {
+        background-color: #d1e7dd;
+        padding: 12px 15px;
+        border-radius: 8px 8px 0 0;
+        margin: -20px -20px 15px -20px;
+    }
+    .condition-label {
+        font-weight: bold;
+    }
+    .condition-name {
+        font-style: italic;
+    }
+    .recipe-content {
+        line-height: 1.6;
+    }
+    .empty-state {
+        text-align: center;
+        color: #6c757d;
+        padding: 40px 0;
+        font-style: italic;
+    }
+    .loading {
+        text-align: center;
+        margin: 40px 0;
+    }
+    .loading-text {
+        color: #6c757d;
+        font-style: italic;
+        margin-top: 15px;
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('recipe-form');
+    const input = document.getElementById('disease-input');
+    const resultContainer = document.getElementById('recipe-result');
+    
+    form.addEventListener('submit', function(e) {
+        e.preventDefault(); // Prevent normal form submission
+        
+        const disease = input.value.trim();
+        if (!disease) return;
+        
+        // Show loading state
+        resultContainer.innerHTML = `
+            <div class="loading">
+                <div class="loading-spinner">
+                    <div>Finding Ayurvedic recipe...</div>
+                </div>
+                <div class="loading-text">This may take a few moments</div>
+            </div>
+        `;
+        
+        // Get CSRF token
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        
+        // Send request to server
+        fetch(window.location.href, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': csrftoken
+            },
+            body: `question=${encodeURIComponent(disease)}`
+        })
+        .then(response => response.text())
+        .then(html => {
+            // Parse the response HTML
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            
+            // Get the recipe result from the response
+            const newResultContainer = doc.getElementById('recipe-result');
+            if (newResultContainer) {
+                resultContainer.innerHTML = newResultContainer.innerHTML;
+            } else {
+                // Fallback if we couldn't find the result container
+                resultContainer.innerHTML = `
+                    <div class="condition-header">
+                        <span class="condition-label">Condition:</span> 
+                        <span class="condition-name">${disease}</span>
+                    </div>
+                    <div class="recipe-content">
+                        The recipe was processed but couldn't be displayed. Please try again.
+                    </div>
+                `;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            
+            // Show error message
+            resultContainer.innerHTML = `
+                <div class="condition-header">
+                    <span class="condition-label">Error</span>
+                </div>
+                <div class="recipe-content">
+                    Sorry, there was an error finding an Ayurvedic recipe for "${disease}". Please try again later.
+                </div>
+            `;
+        });
+    });
+});
+</script>
+{% endblock %}

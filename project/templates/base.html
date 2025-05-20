@@ -1,0 +1,307 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock title %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/your-kit-code.js" crossorigin="anonymous"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+        
+        :root {
+            --bg-color: rgba(255, 255, 255, 0.6);
+            --text-color: #222;
+            --primary-color: #4CAF50;
+            --hover-color: #388E3C;
+            --glass-bg: rgba(255, 255, 255, 0.2);
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .dark-mode {
+            --bg-color: rgba(34, 34, 34, 0.6);
+            --text-color: #fff;
+            --primary-color: #81C784;
+            --hover-color: #66BB6A;
+            --glass-bg: rgba(34, 34, 34, 0.3);
+            --shadow-color: rgba(150, 146, 146, 0.1);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: all 0.3s;
+            background-image: url('{% block background %}{% static "images/plant2.jpg" %}{% endblock background %}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar, .footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 20px;
+            background: var(--glass-bg);
+            box-shadow: 0 8px 16px var(--shadow-color);
+            position: fixed;
+            width: 100%;
+            left: 0;
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            z-index: 1000;
+            animation: slideDown 0.5s ease-out;
+        }
+
+        .navbar { top: 0; }
+        .footer { bottom: 0; }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-color);
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin-left: auto;
+        }
+
+        .nav-links li {
+            margin: 0 15px;
+            animation: fadeIn 0.5s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .nav-links li:nth-child(1) { animation-delay: 0.1s; }
+        .nav-links li:nth-child(2) { animation-delay: 0.2s; }
+        .nav-links li:nth-child(3) { animation-delay: 0.3s; }
+        .nav-links li:nth-child(4) { animation-delay: 0.4s; }
+        .nav-links li:nth-child(5) { animation-delay: 0.5s; }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 18px;
+            padding: 10px 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover, .nav-links .active {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .theme-toggle {
+            width: 50px;
+            height: 25px;
+            background: #ccc;
+            border-radius: 50px;
+            position: relative;
+            cursor: pointer;
+            margin-right: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-circle {
+            width: 22px;
+            height: 22px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 3px;
+            transform: translateY(-50%);
+            transition: all 0.3s;
+        }
+
+        .dark-mode .theme-toggle {
+            background: #444;
+        }
+
+        .dark-mode .toggle-circle {
+            left: 25px;
+            background: yellow;
+        }
+
+        .menu-icon {
+            display: none;
+            font-size: 28px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 70px;
+                right: 20px;
+                background: var(--glass-bg);
+                box-shadow: 0 8px 16px var(--shadow-color);
+                border-radius: 8px;
+                width: 200px;
+                padding: 10px 0;
+                transition: all 0.3s;
+                animation: slideIn 0.3s ease-out;
+            }
+            .nav-links.active {
+                display: flex;
+            }
+            .nav-links li {
+                text-align: center;
+                margin: 10px 0;
+            }
+            .menu-icon {
+                display: block;
+                color: var(--text-color);
+            }
+        }
+
+        .footer {
+            justify-content: center;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .messages {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .message {
+            padding: 15px 25px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .message.success {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .message.error {
+            background: #f44336;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">⚕️ Ayurvedic</div>
+        <div class="nav-container">
+            <div class="menu-icon" onclick="toggleMenu()">☰</div>
+            <ul class="nav-links">
+                <li><a href="{% url 'home' %}" >Home</a></li>
+                <li><a href="{% url 'recipe_view' %}">Remedy Finder</a></li>
+                <li><a href="{% url 'chat_view' %}">Ayurvedic Chat</a></li>
+                
+                <li><a href="{% url 'about' %}">About</a></li>
+                <li><a href="{% url 'contact' %}">Contact</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'profile' %}">Profile</a></li>
+                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'signup' %}">Signup</a></li>
+                {% endif %}
+            </ul>
+            <div class="theme-toggle" onclick="toggleTheme()">
+                <div class="toggle-circle"></div>
+            </div>
+        </div>
+    </nav>
+
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="message {{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <main>
+        {% block body %}{% endblock body %}
+    </main>
+
+    <footer class="footer">
+        <div class="nav-container">
+            <ul class="nav-links">
+                <li><a href="">Privacy Policy</a></li>
+                <li><a href="">Terms of Service</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+        }
+        
+        function toggleMenu() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        } 
+
+        function setActivePage() {
+            const navLinks = document.querySelectorAll('.nav-links a');
+            const currentPage = window.location.pathname;
+    
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        }
+    
+        document.addEventListener("DOMContentLoaded", setActivePage);
+
+        // Auto-hide messages after 5 seconds
+        setTimeout(function() {
+            const messages = document.querySelectorAll('.message');
+            messages.forEach(message => {
+                message.style.opacity = '0';
+                setTimeout(() => message.remove(), 300);
+            });
+        }, 5000);
+    </script>
+</body>
+</html>

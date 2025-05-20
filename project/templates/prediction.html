@@ -1,0 +1,373 @@
+
+{% extends "base.html" %}
+
+{% block title %} Upload & Classify {% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medicinal Plant Identification - Upload & Classify</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        .hero {
+            min-height: 100vh;
+            background: url('https://source.unsplash.com/1600x900/?ayurveda,herbs') no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            color: black;
+            padding: 40px 20px;
+            animation: fadeIn 1.5s ease-in-out;
+            overflow-y: auto;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .upload-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+            transition: 0.3s ease-in-out;
+            margin-bottom: 40px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .upload-box {
+            border: 2px dashed #4CAF50;
+            padding: 25px;
+            cursor: pointer;
+            border-radius: 12px;
+            transition: transform 0.3s ease, background 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .upload-box:hover {
+            background: rgba(76, 175, 80, 0.15);
+            transform: scale(1.05);
+            animation: pulse 1.5s infinite;
+        }
+
+        .upload-box input[type="file"] {
+            display: none;
+        }
+
+        .upload-box label {
+            font-size: 20px;
+            font-weight: bold;
+            color: #4CAF50;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .upload-box label i {
+            font-size: 40px;
+            color: #4CAF50;
+            transition: color 0.3s ease;
+        }
+
+        .upload-box:hover label i {
+            color: #388E3C;
+        }
+
+        .preview-img {
+            width: 100%;
+            max-width: 300px;
+            margin: 15px auto;
+            display: none;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .prediction-type {
+            margin: 15px 0;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .prediction-type label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .prediction-type input[type="radio"] {
+            cursor: pointer;
+        }
+
+        button[type="submit"] {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #388E3C;
+        }
+
+        .result-card {
+            background-color: #f9fbe7;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: left;
+        }
+
+        .result-card h3 {
+            color: #33691e;
+            margin-top: 0;
+            border-bottom: 1px solid #dcedc8;
+            padding-bottom: 8px;
+        }
+
+        .medicinal-info {
+            margin-top: 10px;
+            line-height: 1.5;
+        }
+
+        .error-message {
+            margin-top: 20px;
+            color: #d32f2f;
+            background-color: #ffebee;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @media (max-height: 800px) {
+            .hero {
+                padding: 20px;
+            }
+        }
+
+        /* Make results section scrollable if content is too long */
+        .results-container {
+            max-height: 500px;
+            overflow-y: auto;
+            padding-right: 5px;
+            margin-top: 20px;
+            scrollbar-width: thin;
+            scrollbar-color: #4CAF50 #e8f5e9;
+        }
+        
+        /* Custom scrollbar */
+        .results-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .results-container::-webkit-scrollbar-track {
+            background: #e8f5e9;
+            border-radius: 10px;
+        }
+        
+        .results-container::-webkit-scrollbar-thumb {
+            background: #4CAF50;
+            border-radius: 10px;
+        }
+        
+        .results-container::-webkit-scrollbar-thumb:hover {
+            background: #388E3C;
+        }
+        
+        /* Confidence bar styling */
+        .progress {
+            background-color: #dcedc8;
+            border-radius: 4px;
+            height: 10px;
+            margin-top: 8px;
+        }
+        
+        .progress-bar {
+            background-color: #8bc34a;
+            height: 100%;
+            border-radius: 4px;
+        }
+        
+        .confidence-text {
+            font-size: 14px;
+            margin-top: 4px;
+        }
+        
+        .alternative-matches {
+            margin-top: 12px;
+            font-size: 14px;
+        }
+        
+        .match-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .match-item {
+            margin-bottom: 4px;
+        }
+        
+        .demo-note {
+            font-style: italic;
+            color: #757575;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+        
+        .result-image {
+            max-width: 200px;
+            margin: 20px auto;
+            display: block;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+<br>
+<br>
+<br>
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Medicinal Plant Identification</h1>
+        {% comment %} <p>Upload an image of a medicinal plant leaf for classification using YOLOv8.</p> {% endcomment %}
+
+        <!-- Upload Container -->
+        <div class="upload-container">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="upload-box" onclick="document.getElementById('plantImageInput').click();">
+                    <input type="file" name="plant_image" id="plantImageInput" accept="image/*" onchange="previewImage(event)" required>
+                    <label for="plantImageInput">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <span>Choose an Image</span>
+                    </label>
+                </div>
+                <img id="preview" class="preview-img" style="display: none;">
+                
+                <button type="submit">Analyze</button>
+            </form>
+
+            {% if messages %}
+                <div class="error-message">
+                    {% for message in messages %}
+                        <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if error %}
+                <div class="error-message">
+                    <p>{{ error }}</p>
+                </div>
+            {% endif %}
+
+            {% if prediction_results %}
+                <div class="results-container">
+                    {% if prediction_results.image %}
+                        <img src="data:image/jpeg;base64,{{ prediction_results.image }}" class="result-image">
+                    {% endif %}
+                    
+                    {% if prediction_results.leaf %}
+                        <div class="result-card">
+                            <h3>Identified Plant: {{ prediction_results.leaf.class }}</h3>
+                            <div class="confidence-bar">
+                                <div class="progress">
+                                    <div class="progress-bar" id="leaf-progress-bar"></div>
+                                </div>
+                                <div class="confidence-text">
+                                    Confidence: {{ prediction_results.leaf.confidence|floatformat:1 }}%
+                                </div>
+                            </div>
+                            
+                            {% comment %} {% if prediction_results.leaf.top3 %}
+                            <div class="alternative-matches">
+                                <p><strong>Other possible matches:</strong></p>
+                                <ul class="match-list">
+                                    {% for class, confidence in prediction_results.leaf.top3|slice:"1:" %}
+                                    <li class="match-item">{{ class }} ({{ confidence|floatformat:1 }}%)</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            {% endif %} {% endcomment %}
+                        </div>
+                    {% endif %}
+                    
+                    {% if prediction_results.details %}
+                        <div class="result-card">
+                            <h3>Medicinal Properties</h3>
+                            <div class="medicinal-info">
+                                <p>{{ prediction_results.details }}</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+    {% if prediction_data %}
+    <script>
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function(){
+                var output = document.getElementById('preview');
+                output.src = reader.result;
+                output.style.display = 'block';
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set leaf progress bar width if it exists
+            var leafProgressBar = document.getElementById('leaf-progress-bar');
+            if (leafProgressBar) {
+                leafProgressBar.style.width = "{% if prediction_results.leaf %}{{ prediction_results.leaf.confidence }}{% else %}0{% endif %}%";
+            }
+        });
+    </script>
+    {% endif %}
+    <br>
+    <br>
+    <br>
+</body>
+</html>
+{% endblock body %}

@@ -1,0 +1,136 @@
+
+{% extends "base.html" %}
+
+{% block title %} Home {% endblock title %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Medicine Identification</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: url('https://source.unsplash.com/1600x900/?nature,plants') no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            color: black;
+            padding: 20px;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            opacity: 0;
+            animation: fadeIn 1.5s ease-in-out forwards;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeIn 2s ease-in-out forwards;
+        }
+
+        /* Fade-in Effect */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Button */
+        .btn {
+            background: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease-in-out;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            animation: fadeIn 2.5s ease-in-out forwards;
+        }
+
+        .btn:hover {
+            background: #388E3C;
+            transform: scale(1.05);
+        }
+
+        /* Scroll Down Indicator */
+        .scroll-down {
+            position: absolute;
+            bottom: 30px;
+            font-size: 22px;
+            color: black;
+            cursor: pointer;
+            animation: bounce 2s infinite;
+            opacity: 0.8;
+        }
+
+        /* Bounce Animation */
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(10px); }
+        }
+
+        /* About Section */
+        .about {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .about h2 {
+            font-size: 2.5rem;
+            color: #333;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <h1>Identify Medicinal Plants Instantly</h1>
+        <p>Scan, identify, and explore the healing properties of plants with AI.</p>
+        <button class="btn" onclick="navigateToScan()">Scan & Identify</button>
+        <div class="scroll-down" onclick="smoothScroll('#about')">
+            <i class="fas fa-angle-down"></i>
+        </div>
+    </section>
+    
+    <script>
+        // Smooth Scroll Function
+        function smoothScroll(target) {
+            document.querySelector(target).scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start' 
+            });
+        }
+
+        // Navigate to Scan & Identify Page
+        function navigateToScan() {
+            window.location.href = "/prediction"; // Change this URL accordingly
+        }
+    </script>
+
+</body>
+</html>
+{% endblock body %}
